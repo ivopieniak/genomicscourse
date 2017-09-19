@@ -130,16 +130,15 @@ It is possible to count and filter "k-mers" using [khmer](http://github.com/ged-
 Below, we use khmer to remove extremely frequent k-mers (more than 100x), remove extremely rare k-mers, and we use seqtk to truncate sequences containing unresolved "N"s and nucleotides of particularly low quality. After all this truncation and removal, seqtk remove reads that have become too short, or no longer have a paired read. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering.
 
 ```bash
-# 1. Interleave Fastqs (khmer needs both paired end files merged into one file)
-seqtk mergepe tmp/reads.pe1.trimmed.fq tmp/reads.pe2.trimmed.fq > tmp/reads.pe12.trimmed.fq
+# 1. Build a database of k-mers (includes count for each unique k-mer)
+kmc -k31 tmp/reads.pe1.trimmed.fq tmp/reads.pe2.trimmed.fq 31-mers /tmp
 
-# 2. Remove coverage above 100x, save kmer.counts table
-khmer normalize-by-median.py -p --ksize 20 -C 100 -M 1e9 -s tmp/kmer.counts \
-                -o tmp/reads.pe12.trimmed.max100.fq tmp/reads.pe12.trimmed.fq
-# 3. Filter low abundance kmers
-khmer filter-abund.py -V tmp/kmer.counts \
-                      -o tmp/reads.pe12.trimmed.max100.norare.fq \
-                      tmp/reads.pe12.trimmed.max100.fq
+# 2. Remove coverage above 100x and below 3x
+kmc_tools -t1 filter 31-mers -cx3 tmp/reads.pe1.trimmed.fq -ci0 -cx0 \
+                              tmp/reads.pe1.trimmed.max100.norare.fq
+kmc_tools -t1 filter 31-mers -cx3 tmp/reads.pe2.trimmed.fq -ci0 -cx0 \
+                              tmp/reads.pe2.trimmed.max100.norare.fq
+
 # 4. Remove low quality bases, short sequences, and non-paired reads
 seqtk seq -q 10 -N -L 80 tmp/reads.pe12.trimmed.max100.norare.fq | \
                  seqtk dropse > tmp/reads.pe12.trimmed.max100.norare.noshort.fq
