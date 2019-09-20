@@ -52,7 +52,7 @@ We recommend that you set up a directory for today following [our convention](ht
 
 ```
 
-For the first step of the pipeline, copy the file `reference.fa` and the `reads` directory to `input/01-mapping`.
+For the first step of the pipeline, symlink the file `reference.fa` and the `reads` directory to `input/01-mapping`.
 
 Check how many scaffolds there are in the reference genome:
 
