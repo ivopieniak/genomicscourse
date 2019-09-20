@@ -23,10 +23,10 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 First, create a symlink to the input data that will be used in the next steps:
 
     # Create a symlink from the input data to home directory
-    ln -s /import/teaching/bio/data ~/2019-09-BIO271_input
+    ln -s /import/teaching/bio/data ~/2019-09-BIO721_input
     
 
-Check that you have a directory called `~/2019-09-BIO271_input`. If not, ask for help.
+Check that you have a directory called `~/2019-09-BIO721_input`. If not, ask for help.
 
 ## Set up directory hierarchy to work in
 
