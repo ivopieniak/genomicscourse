@@ -52,7 +52,7 @@ We recommend that you set up a directory for today following [our convention](ht
 
 ```
 
-For the first step of the pipeline, symlink the file `reference.fa` and the `reads` directory to `input/01-mapping`.
+For the first step of the pipeline, symlink the file `reference.fa` and the `reads` directory recursively to `input/01-mapping`.
 
 Check how many scaffolds there are in the reference genome:
 
@@ -140,7 +140,7 @@ samtools view tmp/alignments/f1_B.bam | less -S
 samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 ```
 
-Copy the alignments to `input/02-genotyping`.
+Symlink the alignments to `input/02-genotyping`.
 
 ```sh
 cp -r tmp/alignments ../../input/02-genotyping
@@ -149,7 +149,7 @@ cp -r tmp/alignments ../../input/02-genotyping
 
 ## Variant calling
 
-To begin with, we will need the reference fasta file in addition to the alignments we just created. Copy it over from `input/01-mapping` to `input/02-genotyping` directory.
+To begin with, we will need the reference fasta file in addition to the alignments we just created. Symlink it from `input/01-mapping` to `input/02-genotyping` directory.
 
 The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file.
 
@@ -212,7 +212,7 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf >
 * Can you find any other parameters indicating the quality of the site?
 * Can you find any other parameters indicating the quality of the variant call for a given individual on a given site?
 
-Now that we have a SNP set, we can copy it to `results/` directory.
+Now that we have a SNP set, we can symlink it to `results/` directory.
 
 ```sh
 cp tmp/variants/snp.vcf ./
@@ -223,7 +223,7 @@ cp tmp/variants/snp.vcf ./
 
 In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
 
-Open IGV. It should be installed on the applications menu (`Applications > Other > IGV`) on the top left of the screen[.](http://software.broadinstitute.org/software/igv/download)
+Open `igv` in the terminal[.](http://software.broadinstitute.org/software/igv/download)
 
 IGV loads the human genome, so you need to define another genome file (`Genome` > `Genomes from file`, then choose the assembly `reference.fa` file).
 
